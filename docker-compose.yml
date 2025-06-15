@@ -1,0 +1,15 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    shm_size: 1g
+    volumes:
+      - ./backend/.data/postgresql:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=lastguss
+      - POSTGRES_USER=lastguss
+      - POSTGRES_PASSWORD=Yc9p44MjoRl454_r4
+    privileged: true
