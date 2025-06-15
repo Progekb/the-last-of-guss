@@ -46,7 +46,7 @@ export class RoundsService {
 
   async tap(user: User, roundId: string): Promise<number> {
     if (!user) throw new BadRequestException('Пользователь не найден')
-    const round = await this.roundsRepository.findOne({ where: { id: roundId } });
+    const round = await this.roundsRepository.findOne({ where: { id: roundId }, lock: { mode: 'pessimistic_write' } });
     if (!round) {
       throw new Error('Раунд не найден');
     }
