@@ -15,6 +15,8 @@ export class RoundsService {
     private roundsRepository: Repository<Round>,
     @InjectRepository(Tap)
     private tapsRepository: Repository<Tap>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async getAllActive() {
@@ -46,7 +48,7 @@ export class RoundsService {
 
   async tap(user: User, roundId: string): Promise<number> {
     if (!user) throw new BadRequestException('Пользователь не найден')
-    const round = await this.roundsRepository.findOne({ where: { id: roundId }, lock: { mode: 'pessimistic_write' } });
+    const round = await this.roundsRepository.findOne({ where: { id: roundId } });
     if (!round) {
       throw new Error('Раунд не найден');
     }
@@ -56,6 +58,9 @@ export class RoundsService {
     if (user?.role === 'nikita') {
       return 0;
     }
+
+    // блокируем пессимистично таблицу юзера
+    await this.userRepository.findOne({ where: { id: user.id }, lock: { mode: 'pessimistic_write' } });
 
     const tap = new Tap();
     tap.user = user;
