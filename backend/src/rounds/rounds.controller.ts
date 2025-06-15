@@ -1,8 +1,7 @@
-import { Controller, Post, Body, Req, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Post, Req, Get, Param, UseGuards } from '@nestjs/common';
 import { RoundsService } from './rounds.service';
 import { JwtAuthGuard } from '../jwt-auth.guard';
 import { User } from 'src/entities/user.entity';
-import { AuthGuard } from '@nestjs/passport';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 @UseGuards(JwtAuthGuard)

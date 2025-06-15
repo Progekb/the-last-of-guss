@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Round } from 'src/entities/round.entity';
 import { Repository } from 'typeorm';
-import { Tap } from 'src/entities/tap.entity';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

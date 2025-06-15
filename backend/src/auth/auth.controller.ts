@@ -2,16 +2,12 @@ import {
   Controller,
   Post,
   Body,
-  Res,
   HttpException,
   HttpStatus, NotFoundException, UseGuards, Get, Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Response } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard, Public } from 'src/jwt-auth.guard';
-import { AuthGuard } from '@nestjs/passport';
-import { JwtStrategy } from 'src/jwt.strategy';
 import { User } from 'src/entities/user.entity';
 
 @UseGuards(JwtAuthGuard)
@@ -27,7 +23,7 @@ export class AuthController {
       if (user) {
         const validate = await this.authService.validateUser(user, loginDto.password);
         if (!validate) {
-          throw new NotFoundException('Authentication failed');
+          throw new NotFoundException('Ошибка авторизации');
         }
       } else {
         user = await this.authService.createUser(loginDto.username, loginDto.password);
@@ -45,7 +41,7 @@ export class AuthController {
     } catch (err) {
       console.log(err)
       throw new HttpException(
-        { message: err.message || 'Authentication failed' },
+        { message: err.message || 'Ошибка авторизации' },
         HttpStatus.UNAUTHORIZED,
       );
     }
